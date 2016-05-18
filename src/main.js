@@ -3,11 +3,9 @@ import Player from "./player";
 var dj = (function(){
     var player1, player2;
     function init() {
-        this.player1 = new Player($("#player1"), $("#tempo1"), $("#bpm1"));
-        this.player2 = new Player($("#player2"), $("#tempo2"), $("#bpm2"));
+        this.player1 = new Player($("#player1"), $("#tempo1"));
+        this.player2 = new Player($("#player2"), $("#tempo2"));
     }
-
-
 
     return {
         init: init,

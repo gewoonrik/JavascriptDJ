@@ -1,7 +1,7 @@
 var wavesurfer = require('wavesurfer.js');
 var soundcloud = require('soundcloud');
 
-var clientId = "";
+var clientId = "306478cc250f67f9f7f55ad511a11f53";
 soundcloud.initialize({client_id: clientId});
 
 import Analyzer from "./analyzer";
@@ -9,9 +9,8 @@ import Kali from "./kali";
 import Drawer from "./drawer";
 
 export default class Player {
-    constructor(container,slider, bpmContainer)    {
+    constructor(container,slider)    {
         var self = this;
-
         this.drawer = new Drawer(container);
         this.player = wavesurfer.create({
             container: this.drawer.player.get(0),
@@ -24,33 +23,28 @@ export default class Player {
             self.analyzer.analyze(self.player.backend, self.onBpm.bind(self))
         });
         this.cue = null;
-        this.bpmContainer = bpmContainer;
         this.bpm = null;
         this.drawer.slider.bind("input change", function(){
             var tempo = 0.003 * self.drawer.slider.val() + 0.85;
             self.setTempo(tempo);
         });
 
-        this.drawer.slider.dblclick(function(){
-           slider.val(50);
+        this.drawer.slider.dblclick(function(e){
             self.setTempo(1);
+
+            self.drawer.slider.val(50);
         });
 
     }
 
     setTempo(rate)  {
-        //this.bpmContainer.html(rate*this.bpm);
-        console.log(rate);
+        this.drawer.bpm.html(rate*this.bpm);
         this.player.setPlaybackRate(rate);
-        //kali.setup(44100, rate, true);
-        //kali.input(this.player.backend.buffer);
-        //kali.process();
-        //kali.output(this.player.backend.buffer);
     }
 
     onBpm(bpm) {
         this.bpm = bpm;
-        this.bpmContainer.html(bpm);
+        this.drawer.bpm.html(bpm);
     }
 
 
