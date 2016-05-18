@@ -23,38 +23,41 @@ $(document).ready(function() {
         e.preventDefault();
         dj.player1.loadTrack($track1.val());
     });
+    dj.player2.loadTrack($track2.val());
     $("#track2Form").submit(function(e) {
         e.preventDefault();
         dj.player2.loadTrack($track2.val());
     });
 
     var isPressingDownButton = "";
-    var playAfterRelease = false;
+    var playAfterReleaseDeck1 = false;
+    var playAfterReleaseDeck2 = false;
 
     $(document).on ('keydown', function (e) {
-        e.preventDefault();
 
         var key = String.fromCharCode(e.which).toLowerCase();
         console.log(key);
         // LEFT
         if(key === "%") {
             dj.player1.skipBackward();
+            e.preventDefault();
         }
 
         // RIGHT
         if(key === "'") {
             dj.player1.skipForward();
+            e.preventDefault();
         }
 
         if (key === "a" && isPressingDownButton === "q") {
             console.log("playAfterRelease set true");
-            playAfterRelease = true;
+            playAfterReleaseDeck1 = true;
             isPressingDownButton = "q";
             return;
         }
         if (key === "s" && isPressingDownButton === "w") {
             console.log("playAfterRelease set true");
-            playAfterRelease = true;
+            playAfterReleaseDeck2 = true;
             isPressingDownButton = "w";
             return;
         }
@@ -64,15 +67,19 @@ $(document).ready(function() {
 
         if(key === "a"){
             dj.player1.playPause();
+            e.preventDefault();
         }
         if(key === "s"){
             dj.player2.playPause();
+            e.preventDefault();
         }
         if(key === "q") {
             dj.player1.handleCue(1, false);
+            e.preventDefault();
         }
         if(key === "w")  {
             dj.player2.handleCue(1, false);
+            e.preventDefault();
         }
     });
 
@@ -82,14 +89,16 @@ $(document).ready(function() {
         isPressingDownButton = "";
         
         if(key === "q") {
-            console.log("playAfterRelease is" + playAfterRelease);
-            dj.player1.handleCue(0, playAfterRelease);
-            playAfterRelease = false;
+            console.log("playAfterReleaseDeck1 is" + playAfterReleaseDeck1);
+            dj.player1.handleCue(0, playAfterReleaseDeck1);
+            playAfterReleaseDeck1 = false;
+            e.preventDefault();
         }
         if(key === "w")  {
-            console.log("playAfterRelease is" + playAfterRelease);
-            dj.player2.handleCue(0, playAfterRelease);
-            playAfterRelease = false;
+            console.log("playAfterRelease is" + playAfterReleaseDeck2);
+            dj.player2.handleCue(0, playAfterReleaseDeck2);
+            playAfterReleaseDeck2 = false;
+            e.preventDefault();
         }
     });
 
