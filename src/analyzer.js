@@ -29,7 +29,6 @@ export default class Analyzer {
         var peaks = this.getPeaksAtThreshold(data, threshold);
         var intervalCounts = this.countIntervalsBetweenNearbyPeaks(peaks);
         var tempoCounts = this.groupNeighborsByTempo(intervalCounts);
-        console.log(peaks);
         tempoCounts.sort(function(a, b) {
             return b.count - a.count;
         });

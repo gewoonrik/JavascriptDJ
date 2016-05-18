@@ -12,15 +12,19 @@ export default class Filter {
     }
 
     setFilter(value) {
+        console.log(value);
         var defaultFrequency = 6000;
-        if(value > 0) {
+        if(value > 10) {
             this.player.backend.setFilter(this.highpass);
             this.highpass.frequency.value = Math.abs(value)/100 * defaultFrequency;
         }
-        else {
+        else if(value < -10) {
             this.player.backend.setFilter(this.lowpass);
             this.lowpass.frequency.value = defaultFrequency - Math.abs(value)/100 * defaultFrequency;
-
+        }
+        else {
+            this.highpass.frequency.value = 0;
+            this.lowpass.frequency.value = defaultFrequency;
         }
     }
 }

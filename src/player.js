@@ -36,14 +36,12 @@ export default class Player {
             self.filter.setFilter(tempo);
         });
         this.drawer.filter.dblclick(function(e){
-            self.filter.setFilter(0);
-
             self.drawer.filter.val(0);
+            self.filter.setFilter(0);
         });
 
         this.drawer.slider.dblclick(function(e){
             self.setTempo(1);
-
             self.drawer.slider.val(50);
         });
 
