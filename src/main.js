@@ -18,6 +18,7 @@ $(document).ready(function() {
     var $track1 = $("#track1");
     var $track2 = $("#track2");
 
+    dj.player1.loadTrack($track1.val());
     $("#track1Form").submit(function(e) {
         e.preventDefault();
         dj.player1.loadTrack($track1.val());
@@ -28,12 +29,13 @@ $(document).ready(function() {
     });
 
     var isPressingDownButton = "";
+    var playAfterRelease = false;
 
     $(document).on ('keydown', function (e) {
         e.preventDefault();
 
         var key = String.fromCharCode(e.which).toLowerCase();
-
+        console.log(key);
         // LEFT
         if(key === "%") {
             dj.player1.skipBackward();
@@ -44,6 +46,18 @@ $(document).ready(function() {
             dj.player1.skipForward();
         }
 
+        if (key === "a" && isPressingDownButton === "q") {
+            console.log("playAfterRelease set true");
+            playAfterRelease = true;
+            isPressingDownButton = "q";
+            return;
+        }
+        if (key === "s" && isPressingDownButton === "w") {
+            console.log("playAfterRelease set true");
+            playAfterRelease = true;
+            isPressingDownButton = "w";
+            return;
+        }
 
         if (isPressingDownButton === key) { return; }
         isPressingDownButton = key;
@@ -55,10 +69,10 @@ $(document).ready(function() {
             dj.player2.playPause();
         }
         if(key === "q") {
-            dj.player1.handleCue(1);
+            dj.player1.handleCue(1, false);
         }
         if(key === "w")  {
-            dj.player2.handleCue(1);
+            dj.player2.handleCue(1, false);
         }
     });
 
@@ -66,12 +80,16 @@ $(document).ready(function() {
         e.preventDefault();
         var key = String.fromCharCode(e.which).toLowerCase();
         isPressingDownButton = "";
-
+        
         if(key === "q") {
-            dj.player1.handleCue(0);
+            console.log("playAfterRelease is" + playAfterRelease);
+            dj.player1.handleCue(0, playAfterRelease);
+            playAfterRelease = false;
         }
         if(key === "w")  {
-            dj.player2.handleCue(0);
+            console.log("playAfterRelease is" + playAfterRelease);
+            dj.player2.handleCue(0, playAfterRelease);
+            playAfterRelease = false;
         }
     });
 

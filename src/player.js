@@ -56,22 +56,23 @@ export default class Player {
         });
     }
 
-    handleCue(state) {
+    handleCue(state, continueAfterRelease) {
         console.log("HANDLE CUE: " + state);
         var currentTime = this.player.getCurrentTime()/this.player.getDuration();
-        if (this.player.isPlaying() && state === 0) {
+        if (this.player.isPlaying() && state === 0 && !continueAfterRelease) {
             this.player.pause();
             this.player.seekTo(this.cue);
         }
         else if(this.cue == currentTime && state === 1) {
             this.player.play();
         }
-        else {
+        else if (!this.player.isPlaying() && state === 1) {
             this.setCuePoint();
         }
     }
 
     setCuePoint() {
+        console.log("setCuePoint");
         this.cue = this.player.getCurrentTime()/this.player.getDuration();
     }
 
@@ -86,6 +87,7 @@ export default class Player {
             this.player.pause();
         }, 25);
     }
+
     skipBackward() {
         this.player.setPlaybackRate(-1);
         this.player.play();
