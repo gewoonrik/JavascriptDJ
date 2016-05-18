@@ -8,9 +8,12 @@ import Analyzer from "./analyzer";
 import Drawer from "./drawer";
 import Filter from "./filter";
 
+const ForwardSkipTime = 25;
+const BackwardsSkipTime = 25;
+
 export default class Player {
     constructor(container,slider)    {
-        var self = this;
+        this.url = "";
         this.drawer = new Drawer(container);
         this.player = wavesurfer.create({
             container: this.drawer.player.get(0),
@@ -20,26 +23,29 @@ export default class Player {
         });
         this.filter = new Filter(this.player);
         this.analyzer = new Analyzer();
-        this.player.on('ready', function () {
-            self.analyzer.analyze(self.player.backend, self.onBpm.bind(self))
+        this.player.on('ready', () => {
+            this.analyzer.analyze(this.player.backend, this.onBpm.bind(self));
+            console.log("ready");
+            this.cue = localStorage.getItem(this.url) || 0;
+            this.player.seekTo(this.cue);
         });
 
         this.cue = null;
         this.bpm = null;
-        this.drawer.slider.bind("input change", function(){
+        this.drawer.slider.bind("input change", () => {
             var tempo = 0.003 * self.drawer.slider.val() + 0.85;
-            self.setTempo(tempo);
+            this.setTempo(tempo);
         });
 
-        this.drawer.filter.bind("input change", function(){
+        this.drawer.filter.bind("input change", () => {
             var tempo = self.drawer.filter.val();
-            self.filter.setFilter(tempo);
+            this.filter.setFilter(tempo);
         });
 
-        this.drawer.slider.dblclick(function(e){
-            self.setTempo(1);
+        this.drawer.slider.dblclick(() => {
+            this.setTempo(1);
 
-            self.drawer.slider.val(50);
+            this.drawer.slider.val(50);
         });
 
     }
@@ -56,11 +62,10 @@ export default class Player {
 
 
     loadTrack(url) {
-        var self = this;
-        soundcloud.get('/resolve?url='+url+"").then(function(result){
+        this.url = url;
+        soundcloud.get('/resolve?url='+url+"").then((result) => {
             var stream = result.stream_url+"?client_id="+clientId;
-            self.player.load(stream);
-            self.cue = null;
+            this.player.load(stream);
         });
     }
 
@@ -81,7 +86,8 @@ export default class Player {
 
     setCuePoint() {
         console.log("setCuePoint");
-        this.cue = this.player.getCurrentTime()/this.player.getDuration();
+        this.cue = Math.abs(this.player.getCurrentTime()/this.player.getDuration());
+        localStorage.setItem(this.url, this.cue);
     }
 
     playPause() {
@@ -93,7 +99,7 @@ export default class Player {
         this.player.play();
         setTimeout(() => {
             this.player.pause();
-        }, 25);
+        }, ForwardSkipTime);
     }
 
     skipBackward() {
@@ -102,7 +108,7 @@ export default class Player {
         setTimeout(() => {
             this.player.pause();
             this.player.setPlaybackRate(1);
-        }, 25);
+        }, BackwardsSkipTime);
     }
 }
 
