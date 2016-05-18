@@ -35,6 +35,11 @@ export default class Player {
             var tempo = self.drawer.filter.val();
             self.filter.setFilter(tempo);
         });
+        this.drawer.filter.dblclick(function(e){
+            self.filter.setFilter(0);
+
+            self.drawer.filter.val(0);
+        });
 
         this.drawer.slider.dblclick(function(e){
             self.setTempo(1);
