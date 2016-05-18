@@ -43,6 +43,15 @@ $(document).ready(function() {
             e.preventDefault();
         }
 
+        //up
+        if(key == "&") {
+            dj.player1.filter.frequency.value += 100;
+        }
+
+        if(key == "(") {
+            dj.player1.filter.frequency.value -= 100;
+        }
+
         // RIGHT
         if(key === "'") {
             dj.player1.skipForward();
