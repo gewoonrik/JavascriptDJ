@@ -1,7 +1,7 @@
 var wavesurfer = require('wavesurfer.js');
 var soundcloud = require('soundcloud');
 
-var clientId = "";
+var clientId = "62bdfd1ba23c2ef7491219c96aff2e14";
 soundcloud.initialize({client_id: clientId});
 
 import Analyzer from "./analyzer";
