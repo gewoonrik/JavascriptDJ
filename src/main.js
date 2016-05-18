@@ -30,18 +30,19 @@ $(document).ready(function() {
     var isPressingDownButton = "";
 
     $(document).on ('keydown', function (e) {
-        e.preventDefault();
 
         var key = String.fromCharCode(e.which).toLowerCase();
 
         // LEFT
         if(key === "%") {
             dj.player1.skipBackward();
+            e.preventDefault();
         }
 
         // RIGHT
         if(key === "'") {
             dj.player1.skipForward();
+            e.preventDefault();
         }
 
 
@@ -50,15 +51,19 @@ $(document).ready(function() {
 
         if(key === "a"){
             dj.player1.playPause();
+            e.preventDefault();
         }
         if(key === "s"){
             dj.player2.playPause();
+            e.preventDefault();
         }
         if(key === "q") {
             dj.player1.handleCue(1);
+            e.preventDefault();
         }
         if(key === "w")  {
             dj.player2.handleCue(1);
+            e.preventDefault();
         }
     });
 
@@ -69,9 +74,11 @@ $(document).ready(function() {
 
         if(key === "q") {
             dj.player1.handleCue(0);
+            e.preventDefault();
         }
         if(key === "w")  {
             dj.player2.handleCue(0);
+            e.preventDefault();
         }
     });
 
