@@ -5,7 +5,6 @@ var clientId = "306478cc250f67f9f7f55ad511a11f53";
 soundcloud.initialize({client_id: clientId});
 
 import Analyzer from "./analyzer";
-import Kali from "./kali";
 import Drawer from "./drawer";
 
 export default class Player {
@@ -57,12 +56,14 @@ export default class Player {
         });
     }
 
-    handleCue() {
+    handleCue(state) {
+        console.log("HANDLE CUE: " + state);
         var currentTime = this.player.getCurrentTime()/this.player.getDuration();
-        if(this.player.isPlaying()) {
+        if (this.player.isPlaying() && state === 0) {
+            this.player.pause();
             this.player.seekTo(this.cue);
         }
-        else if(this.cue == currentTime)    {
+        else if(this.cue == currentTime && state === 1) {
             this.player.play();
         }
         else {
@@ -75,7 +76,23 @@ export default class Player {
     }
 
     playPause() {
+        console.log("playpause");
         this.player.playPause();
+    }
+
+    skipForward() {
+        this.player.play();
+        setTimeout(() => {
+            this.player.pause();
+        }, 25);
+    }
+    skipBackward() {
+        this.player.setPlaybackRate(-1);
+        this.player.play();
+        setTimeout(() => {
+            this.player.pause();
+            this.player.setPlaybackRate(1);
+        }, 25);
     }
 }
 

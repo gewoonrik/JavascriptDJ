@@ -27,23 +27,53 @@ $(document).ready(function() {
         dj.player2.loadTrack($track2.val());
     });
 
-    $(document).on ('keypress', function (e) {
-        var key = String.fromCharCode(e.which);
-        if(key == "a"){
+    var isPressingDownButton = "";
+
+    $(document).on ('keydown', function (e) {
+        e.preventDefault();
+
+        var key = String.fromCharCode(e.which).toLowerCase();
+
+        // LEFT
+        if(key === "%") {
+            dj.player1.skipBackward();
+        }
+
+        // RIGHT
+        if(key === "'") {
+            dj.player1.skipForward();
+        }
+
+
+        if (isPressingDownButton === key) { return; }
+        isPressingDownButton = key;
+
+        if(key === "a"){
             dj.player1.playPause();
         }
-        if(key == "s"){
+        if(key === "s"){
             dj.player2.playPause();
         }
-        if(key == "q") {
-            dj.player1.handleCue();
+        if(key === "q") {
+            dj.player1.handleCue(1);
         }
-        if(key == "w")  {
-            dj.player2.handleCue();
+        if(key === "w")  {
+            dj.player2.handleCue(1);
         }
-
     });
 
+    $(document).on ('keyup', function (e) {
+        e.preventDefault();
+        var key = String.fromCharCode(e.which).toLowerCase();
+        isPressingDownButton = "";
+
+        if(key === "q") {
+            dj.player1.handleCue(0);
+        }
+        if(key === "w")  {
+            dj.player2.handleCue(0);
+        }
+    });
 
 });
 
