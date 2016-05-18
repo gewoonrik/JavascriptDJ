@@ -8,12 +8,13 @@ export default class Drawer {
         var sliderContainer = $("<div class='col-xs-2'></div>").append(this.bpm).append(this.slider);
 
         this.player = $("<div class='col-xs-10'></div>");
+        this.filter = $('<input type="range" min="-100" max="100" orient="horizontal" />');
+
         var row = $("<div class='row'></div>");
 
-        row.append(sliderContainer).append(this.player);
+        row.append(sliderContainer).append(this.player).append(this.filter);
 
         container.append(row);
-        console.log(container)
     }
 
 }

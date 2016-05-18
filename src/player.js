@@ -6,6 +6,7 @@ soundcloud.initialize({client_id: clientId});
 
 import Analyzer from "./analyzer";
 import Drawer from "./drawer";
+import Filter from "./filter";
 
 export default class Player {
     constructor(container,slider)    {
@@ -17,15 +18,22 @@ export default class Player {
             progressColor: 'purple',
             barWidth: 0.5
         });
+        this.filter = new Filter(this.player);
         this.analyzer = new Analyzer();
         this.player.on('ready', function () {
             self.analyzer.analyze(self.player.backend, self.onBpm.bind(self))
         });
+
         this.cue = null;
         this.bpm = null;
         this.drawer.slider.bind("input change", function(){
             var tempo = 0.003 * self.drawer.slider.val() + 0.85;
             self.setTempo(tempo);
+        });
+
+        this.drawer.filter.bind("input change", function(){
+            var tempo = self.drawer.filter.val();
+            self.filter.setFilter(tempo);
         });
 
         this.drawer.slider.dblclick(function(e){
