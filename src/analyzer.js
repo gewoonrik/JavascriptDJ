@@ -25,10 +25,11 @@ export default class Analyzer {
         var data = filteredBuffer.getChannelData(0);
         var max = this.arrayMax(data);
         var min = this.arrayMin(data);
-        var threshold = min + (max - min) * 0.98;
+        var threshold = min + (max - min) * 0.95;
         var peaks = this.getPeaksAtThreshold(data, threshold);
         var intervalCounts = this.countIntervalsBetweenNearbyPeaks(peaks);
         var tempoCounts = this.groupNeighborsByTempo(intervalCounts);
+        console.log(peaks);
         tempoCounts.sort(function(a, b) {
             return b.count - a.count;
         });
